@@ -2,16 +2,18 @@ const express = require("express");
 const mssql = require("mssql");
 const bodyParser = require("body-parser"); // Added for parsing request body
 
+require("dotenv").config();
+
 const app = express();
 const port = 3000;
 
 // Configure SQL Server connection details
 const config = {
-  user: "your_username",
-  password: "your_password",
-  server: "your_server_name",
-  database: "your_database_name",
-  port: 1433,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  server: process.env.DB_SERVER,
+  database: process.env.DB_DATABASE,
+  port: 1433, // Assuming this port doesn't change
 };
 
 // Connect to SQL Server
