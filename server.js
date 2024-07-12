@@ -5,7 +5,7 @@ const bodyParser = require("body-parser"); // Added for parsing request body
 require("dotenv").config();
 
 const app = express();
-const port = 3000;
+const port = Number(process.env.PORT1);
 
 // Configure SQL Server connection details
 const config = {
@@ -13,8 +13,13 @@ const config = {
   password: process.env.DB_PASSWORD,
   server: process.env.DB_SERVER,
   database: process.env.DB_DATABASE,
-  port: 1433, // Assuming this port doesn't change
+  port: Number(process.env.PORT2),
+  options: {
+    encrypt: process.env.ENCRYPT === "true",
+  },
 };
+
+const tableName01 = process.env.TABLE_NAME01;
 
 // Connect to SQL Server
 mssql
@@ -28,7 +33,7 @@ mssql
     // Define routes
     app.get("/data", async (req, res) => {
       // Define your SQL query here (replace with your specific query)
-      const query = "SELECT * FROM your_table_name";
+      const query = `SELECT * FROM ${tableName01}`;
 
       try {
         const result = await pool.request().query(query);
@@ -36,44 +41,6 @@ mssql
       } catch (err) {
         console.error("Error fetching data:", err);
         res.status(500).send("Error retrieving data"); // Handle errors
-      }
-    });
-
-    app.post("/data", async (req, res) => {
-      const newData = req.body; // Access data from request body
-
-      // Define your SQL INSERT query here
-      const query = `INSERT INTO your_table_name (column1, column2, ...) VALUES (@col1, @col2, ...)`;
-
-      try {
-        const request = pool.request();
-        // Add parameters for each column in the INSERT query
-        request.input("col1", newData.column1); // Replace with actual column names
-        request.input("col2", newData.column2); // ...
-
-        await request.query(query);
-        res.status(201).send("Data inserted successfully"); // Created status code
-      } catch (err) {
-        console.error("Error inserting data:", err);
-        res.status(500).send("Error creating data");
-      }
-    });
-
-    app.delete("/data/:id", async (req, res) => {
-      const id = req.params.id; // Access ID from URL parameter
-
-      // Define your SQL DELETE query here
-      const query = `DELETE FROM your_table_name WHERE id = @id`;
-
-      try {
-        const request = pool.request();
-        request.input("id", id);
-
-        await request.query(query);
-        res.status(204).send(); // No Content status code (data deleted)
-      } catch (err) {
-        console.error("Error deleting data:", err);
-        res.status(500).send("Error deleting data");
       }
     });
 

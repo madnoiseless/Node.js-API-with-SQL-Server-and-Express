@@ -1,77 +1,45 @@
 ## Node.js API with SQL Server and Express
 
-This project is a basic Node.js application built with Express that interacts with a Microsoft SQL Server database. It demonstrates CRUD operations (Create, Read, Update, Delete) on a database table.
+This project demonstrates a simple Node.js application that connects to a Microsoft SQL Server database and retrieves data using the Express framework and mssql package.
 
 **Features:**
 
-- Connect to a Microsoft SQL Server database.
-- Retrieve data from the database using a GET request.
-- Insert new data into the database using a POST request.
-- Delete data from the database using a DELETE request with an ID parameter.
-- Parse JSON data from request bodies using body-parser.
+* Connects to a SQL Server database using environment variables for secure configuration.
+* Defines a route (`/data`) to retrieve data from a specific table using a GET request.
+* Parses JSON data in request body (if applicable).
+* Handles errors during database connection and data fetching.
+* Returns retrieved data as JSON.
 
 **Requirements:**
 
-- Node.js and npm installed ([https://nodejs.org/en/download/package-manager](https://nodejs.org/en/download/package-manager))
-- Microsoft SQL Server database
+* Node.js and npm installed ([https://nodejs.org/en](https://nodejs.org/en))
+* Microsoft SQL Server database
+* `mssql` package (`npm install mssql`)
+* `express` package (`npm install express`)
+* `dotenv` package (`npm install dotenv`) (optional, for environment variables)
 
 **Setup:**
 
-1. Clone this repository.
-2. Install dependencies: `npm install`
-3. Update the `config.js` file with your SQL Server connection details (username, password, server, database, port).
-4. Run the server: `node server.js`
+1. Create a `.env` file (optional) and define the following environment variables:
+    * `DB_USER`: Username for SQL Server access
+    * `DB_PASSWORD`: Password for SQL Server access
+    * `DB_SERVER`: Server name or IP address of your SQL Server instance
+    * `DB_DATABASE`: Database name to connect to
+    * `PORT1`: Port number for the Node.js server to listen on
+    * `PORT2` (optional): Port number for SQL Server (default: 1433)
+    * `ENCRYPT` (optional): Set to "true" for encrypted connection
 
-**API Endpoints:**
+2. Replace `tableName01` in the code with the actual name of your table in the SQL Server database.
 
-| Method | URL | Description |
-|---|---|---|
-| GET | `/data` | Retrieves data from the specified table. |
-| POST | `/data` | Inserts new data into the specified table (data provided in JSON body). |
-| DELETE | `/data/:id` | Deletes data from the specified table based on the provided ID. |
+3. Run the application using `node server.js`.
 
-**Important Notes:**
+**Deployment:**
 
-- This is a basic example for demonstration purposes. Consider implementing additional features like:
-    - Input validation to prevent SQL injection attacks.
-    - More specific error handling with informative messages.
-    - Security best practices (e.g., storing sensitive information in environment variables).
-    - Logging for debugging and monitoring.
-- Replace placeholders like `your_table_name`, `column1`, and `column2` with your actual database table and column names.
+This is a basic example and might require adjustments for deployment depending on your environment. Consider using process managers like PM2 for production deployments.
 
-**Getting Started:**
+**Further Customization:**
 
-After setting up the project, you can use tools like Postman to test the API endpoints.
-
-**Example (GET request):**
-
-```
-GET http://localhost:3000/data
-```
-
-This retrieves all data from the specified table and returns it as JSON.
-
-**Example (POST request):**
-
-```
-POST http://localhost:3000/data
-Content-Type: application/json
-
-{
-  "column1": "value1",
-  "column2": "value2",
-  // ... other data
-}
-```
-
-This inserts a new row into the table with the provided data in the JSON body.
-
-**Example (DELETE request):**
-
-```
-DELETE http://localhost:3000/data/123
-```
-
-This deletes the row with ID 123 from the table.
-
-This README provides a basic guide to get you started. Feel free to modify and extend this project to fit your specific needs.
+* Define additional routes for different functionalities.
+* Implement more complex SQL queries for specific data retrieval needs.
+* Enhance error handling to provide more specific messages.
+* Integrate authentication and authorization mechanisms for secure access control.
